@@ -60,6 +60,6 @@ class UserView(APIView):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
-class Note(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
+
+
+
