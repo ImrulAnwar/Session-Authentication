@@ -8,8 +8,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
 		fields = '__all__'
+	# overridden
 	def create(self, clean_data):
 		user_obj = UserModel.objects.create_user(email=clean_data['email'], password=clean_data['password'])
+		user_obj.username = clean_data['username']
+		user_obj.save()
+		return user_obj
+	
+class SuperUserRegisterSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = UserModel
+		fields = '__all__'
+	# overridden
+	def create(self, clean_data):
+		user_obj = UserModel.objects.create_superuser(email=clean_data['email'], password=clean_data['password'])
 		user_obj.username = clean_data['username']
 		user_obj.save()
 		return user_obj
@@ -17,7 +29,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
 	email = serializers.EmailField()
 	password = serializers.CharField()
-	##
+	# overridden
 	def check_user(self, clean_data):
 		user = authenticate(username=clean_data['email'], password=clean_data['password'])
 		if not user:
